@@ -8,57 +8,165 @@
 <body>
 
 
-  <div class="keys">
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">clap</span>
-    </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">hihat</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">kick</span>
-    </div>
-    <div data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">openhat</span>
-    </div>
-    <div data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">boom</span>
-    </div>
-    <div data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">ride</span>
-    </div>
-    <div data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">snare</span>
-    </div>
-    <div data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">tom</span>
-    </div>
-    <div data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">tink</span>
-    </div>
+  <div class="keys"></div>
+  <div id="audio-container"></div>
+  <div id="code-container">
+    <h1>Insert the code:</h1>
+    <textarea id="code-editor"></textarea>
+    <button id="play-button">Play the code!</button>
   </div>
 
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/hihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
-
 <script>
+  const defaultKeyMappings = {
+    '0': {key: '0', instrument: 'piano', sound: '001'},
+    '1': {key: '1', instrument: 'piano', sound: '002'},
+    '2': {key: '2', instrument: 'piano', sound: '003'},
+    '3': {key: '3', instrument: 'piano', sound: '004'},
+    '4': {key: '4', instrument: 'piano', sound: '005'},
+    '5': {key: '5', instrument: 'piano', sound: '006'},
+    '6': {key: '6', instrument: 'piano', sound: '007'},
+    '7': {key: '7', instrument: 'piano', sound: '008'},
+    '8': {key: '8', instrument: 'piano', sound: '009'},
+    '9': {key: '9', instrument: 'piano', sound: '010'},
 
+    'A': {key: 'A', instrument: 'piano', sound: '011'},
+    'B': {key: 'B', instrument: 'piano', sound: '012'},
+    'C': {key: 'C', instrument: 'piano', sound: '013'},
+    'D': {key: 'D', instrument: 'piano', sound: '014'},
+    'E': {key: 'E', instrument: 'piano', sound: '015'},
+    'F': {key: 'F', instrument: 'piano', sound: '016'},
+    'G': {key: 'G', instrument: 'piano', sound: '017'},
+    'H': {key: 'H', instrument: 'piano', sound: '018'},
+    'I': {key: 'I', instrument: 'piano', sound: '019'},
+    'J': {key: 'J', instrument: 'piano', sound: '020'},
+    'K': {key: 'K', instrument: 'piano', sound: '021'},
+    'L': {key: 'L', instrument: 'piano', sound: '022'},
+    'M': {key: 'M', instrument: 'piano', sound: '023'},
+    'N': {key: 'N', instrument: 'piano', sound: '024'},
+    'O': {key: 'O', instrument: 'piano', sound: '025'},
+    'P': {key: 'P', instrument: 'piano', sound: '026'},
+    'Q': {key: 'Q', instrument: 'piano', sound: '027'},
+    'R': {key: 'R', instrument: 'piano', sound: '028'},
+    'S': {key: 'S', instrument: 'piano', sound: '029'},
+    'T': {key: 'T', instrument: 'piano', sound: '030'},
+    'U': {key: 'U', instrument: 'piano', sound: '031'},
+    'V': {key: 'V', instrument: 'piano', sound: '032'},
+    'W': {key: 'W', instrument: 'piano', sound: '033'},
+    'X': {key: 'X', instrument: 'piano', sound: '034'},
+    'Y': {key: 'Y', instrument: 'piano', sound: '035'},
+    'Z': {key: 'Z', instrument: 'piano', sound: '036'},
+
+    '`': {key: '`', instrument: 'piano', sound: '037'},
+    '~': {key: '~', instrument: 'piano', sound: '038'},
+    '!': {key: '!', instrument: 'piano', sound: '039'},
+    '@': {key: '@', instrument: 'piano', sound: '040'},
+    '#': {key: '#', instrument: 'piano', sound: '041'},
+    '$': {key: '$', instrument: 'piano', sound: '042'},
+    '%': {key: '%', instrument: 'piano', sound: '043'},
+    '^': {key: '^', instrument: 'piano', sound: '044'},
+    '&': {key: '&', instrument: 'piano', sound: '045'},
+    '*': {key: '*', instrument: 'piano', sound: '046'},
+    '(': {key: '(', instrument: 'piano', sound: '047'},
+    ')': {key: ')', instrument: 'piano', sound: '048'},
+    '-': {key: '-', instrument: 'piano', sound: '049'},
+    '_': {key: '_', instrument: 'piano', sound: '050'},
+    '=': {key: '=', instrument: 'piano', sound: '051'},
+    '+': {key: '+', instrument: 'piano', sound: '052'},
+    '{': {key: '{', instrument: 'piano', sound: '053'},
+    '}': {key: '}', instrument: 'piano', sound: '054'},
+    '[': {key: '[', instrument: 'piano', sound: '055'},
+    ']': {key: ']', instrument: 'piano', sound: '056'},
+    '\\': {key: '\\', instrument: 'piano', sound: '057'},
+    '|': {key: '|', instrument: 'piano', sound: '058'},
+    ';': {key: ';', instrument: 'piano', sound: '059'},
+    ':': {key: ':', instrument: 'piano', sound: '060'},
+    '\'': {key: '\'', instrument: 'piano', sound: '061'},
+    '"': {key: '"', instrument: 'piano', sound: '062'},
+    '/': {key: '/', instrument: 'piano', sound: '063'},
+    '?': {key: '?', instrument: 'piano', sound: '064'},
+    '.': {key: '.', instrument: 'piano', sound: '065'},
+    '>': {key: '>', instrument: 'piano', sound: '066'},
+    '<': {key: '<', instrument: 'piano', sound: '067'},
+    ',': {key: ',', instrument: 'piano', sound: '068'},
+
+    'TAB': {key: 'TAB', instrument: 'piano', sound: '068'},
+    'ENTER': {key: 'ENTER', instrument: 'piano', sound: '068'},
+    ' ': {key: 'SPACE', instrument: 'piano', sound: '068'},
+  };
+
+  let loadedAudio = {};
+
+  const keysContainer = document.getElementsByClassName('keys')[0];
+
+  // Init keys and audio
+  Object.keys(defaultKeyMappings).forEach(mappingKey => {
+    const mapping = defaultKeyMappings[mappingKey];
+
+    if (!loadedAudio.hasOwnProperty(`${mapping.instrument}-${mapping.sound}`)) {
+      let audio = document.createElement('audio');
+      audio.src = `sounds/${mapping.instrument}/${mapping.sound}.wav`;
+      audio.setAttribute('data-sound', `${mapping.instrument}-${mapping.sound}`);
+
+      document.getElementById('audio-container').appendChild(audio);
+      loadedAudio[`${mapping.instrument}-${mapping.sound}`] = true;
+    }
+
+    let key = document.createElement('div');
+    key.setAttribute('data-key', mapping.key);
+    key.setAttribute('class', `key`);
+
+    let kbd = document.createElement('kbd');
+    kbd.innerHTML = mapping.key;
+
+    let sound = document.createElement('span');
+    sound.setAttribute('class', 'sound');
+    sound.innerHTML = `${mapping.instrument}/${mapping.sound}`;
+
+    key.appendChild(kbd);
+    key.appendChild(sound);
+
+    key.addEventListener('transitionend', function (e) {
+      if (e.propertyName === 'transform') {
+         this.classList.remove('playing');
+      }
+    });
+
+    keysContainer.appendChild(key);
+  });
+
+  function playSound(key, defaultKeyMappings) {
+    const mapping = defaultKeyMappings[key];
+
+    if (mapping) {
+      const audio = document.querySelector(`audio[data-sound="${mapping.instrument}-${mapping.sound}"]`);
+      audio.currentTime = 0;
+      audio.play();
+
+      let key = null;
+      if (mapping.key === "'") {
+        key = document.querySelector(`div[data-key="${mapping.key}"]`);
+      } else {
+        key = document.querySelector(`div[data-key='${mapping.key}']`);
+      }
+      
+      key.classList.add('playing');
+    }
+  }
+
+  window.addEventListener('keydown', (e) => {
+    playSound(e.key.toUpperCase(), defaultKeyMappings);
+  });
+
+  document.getElementById('play-button').addEventListener('click', () => {
+    const editorValue = document.getElementById('code-editor').value;
+    
+    for (var i = 0; i < editorValue.length; i++) {
+      const index = i + 0;
+      setTimeout(() => {
+        playSound(editorValue.charAt(index).toUpperCase(), defaultKeyMappings);
+      }, index * 200);
+    }
+  });
 </script>
 
 
